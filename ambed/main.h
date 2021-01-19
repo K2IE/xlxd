@@ -72,7 +72,7 @@
 #define CODECGAIN_AMBE2PLUS             +10                                 // in dB
 
 // Transcoding Tweaks
-#define USE_AGC                         0
+#define USE_AGC                         1
 #define AGC_CLAMPING                    3                                   //clamps the AGC gain to +- this value
 #define USE_BANDPASSFILTER              1
 
