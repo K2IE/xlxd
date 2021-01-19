@@ -1,0 +1,15 @@
+[Unit]
+Description=XLX Multiprotocol Reflector
+Requires=network.target
+After=systemd-user-sessions.service network.target
+
+[Service]
+Type=forking
+EnvironmentFile=-/etc/default/xlxd
+ExecStart=/usr/local/bin/xlxd $REFLECTOR $MYIP $TRANSIP
+ExecStartPost=/bin/sh -c "/bin/pidof xlxd > /run/xlxd.pid"
+Restart=always
+PIDFile=/run/xlxd.pid
+
+[Install]
+WantedBy=multi-user.target
