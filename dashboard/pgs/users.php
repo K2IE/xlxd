@@ -147,9 +147,11 @@ for ($i=0;$i<$Reflector->StationCount();$i++) {
       if ($Reflector->Stations[$i]->GetPeer() != $Reflector->GetReflectorName()) {
          echo ' / '.$Reflector->Stations[$i]->GetPeer();
       }
+      # Hide module L
+      $CurrMod = str_replace("L","*",$Reflector->Stations[$i]->GetModule());
       echo '</td>
    <td width="150">'.@date("d.m.Y H:i", $Reflector->Stations[$i]->GetLastHeardTime()).'</td>
-   <td align="center" width="30">'.$Reflector->Stations[$i]->GetModule().'</td>
+   <td align="center" width="30">'.$CurrMod.'</td>
  </tr>';
    }
    if ($i == $PageOptions['LastHeardPage']['LimitTo']) { $i = $Reflector->StationCount()+1; }
@@ -169,10 +171,12 @@ for ($i=0;$i<$Reflector->StationCount();$i++) {
 <table class="listingtable">
 <?php 
 
-$Modules = $Reflector->GetModules();
+#$Modules = $Reflector->GetModules();
+$Modules = str_replace("L","a",$Reflector->GetModules());
 sort($Modules, SORT_STRING);
 echo '
  <tr>';
+
 for ($i=0;$i<count($Modules);$i++) {
    
    if (isset($PageOptions['ModuleNames'][$Modules[$i]])) {
@@ -185,7 +189,7 @@ for ($i=0;$i<count($Modules);$i++) {
       echo $Modules[$i].'</th>
 ';
    }
-   else {
+   else if ($Modules[$i] < "a") {
    echo '
   
       <th>'.$Modules[$i].'</th>';
@@ -199,6 +203,8 @@ echo '
 $GlobalPositions = array();
 
 for ($i=0;$i<count($Modules);$i++) {
+
+   if ($Modules[$i] > "Z") { break;}
 
    $Users = $Reflector->GetNodesInModulesByID($Modules[$i]);
    echo '

@@ -76,8 +76,8 @@ include an extra config file for people who dont like to mess with shipped confi
 this makes updating dashboard from git a little bit easier   
 */   
  
-if (file_exists("../config.inc.php")) {   
- include ("../config.inc.php");  
+if (file_exists("/var/www/xlx020/config.inc.php")) {   
+ include ("/var/www/xlx020/config.inc.php");  
 }   
 
 ?>

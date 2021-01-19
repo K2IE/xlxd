@@ -136,7 +136,7 @@ else {
          <table border="0">
             <tr>
                <td><a href="./index.php" class="menulink<?php if ($_GET['show'] == '') { echo 'active'; } ?>">Users / Modules</a></td>
-               <td><a href="./index.php?show=repeaters" class="menulink<?php if ($_GET['show'] == 'repeaters') { echo 'active'; } ?>">Repeaters / Nodes (<?php echo $Reflector->NodeCount(); ?>)</a></td>
+               <td><a href="./index.php?show=repeaters" class="menulink<?php if ($_GET['show'] == 'repeaters') { echo 'active'; } ?>">Nodes (<?php echo $Reflector->NodeCount(); ?>)</a></td>
                <td><a href="./index.php?show=peers" class="menulink<?php if ($_GET['show'] == 'peers') { echo 'active'; } ?>">Peers (<?php echo $Reflector->PeerCount(); ?>)</a></td>
                <td><a href="./index.php?show=reflectors" class="menulink<?php if ($_GET['show'] == 'reflectors') { echo 'active'; } ?>">Reflectorlist</a></td>
                <?php
@@ -151,10 +151,20 @@ else {
                    echo '
                <td><a href="./index.php?show=liveircddb" class="menulink';
                    if ($_GET['show'] == 'liveircddb') { echo 'active'; }
-                   echo '">D-Star live</a></td>';
+                   echo '">Quadnet Live</a></td>';
               }
-               
-               ?>
+              ?>
+
+              <td><a href="http://xrf020.k2ie.net" class="menulink">XRF</a></td>
+              <td><a href="http://ref020.dstargateway.org" class="menulink">REF</a
+              <td><a href="http://m17-020.k2ie.net" class="menulink">M17</a
+></td>
+              <td><a href="http://allmon2.k2ie.net//link.php?nodes=47742" class
+="menulink">Allmon</a></td>
+              <td><a href="http://peanut-usa.pa7lim.nl" class="menulink">Peanut</a></td>
+               <td><a href="http://www.k2ie.net/blog" class="menulink">K2IE Blog</a></td>
+               <td><a href="http://www.k2ie.net/support" class="menulink">Support</a></td>
+
             </tr>
           </table>
       </div>
@@ -174,7 +184,7 @@ else {
    switch ($_GET['show']) {
       case 'users'      : require_once("./pgs/users.php"); break;
       case 'repeaters'  : require_once("./pgs/repeaters.php"); break;
-      case 'liveircddb' : require_once("./pgs/liveircddb.php"); break;
+      case 'liveircddb' : require_once("./pgs/livequadnet.php"); break;
       case 'peers'      : require_once("./pgs/peers.php"); break;
       case 'reflectors' : require_once("./pgs/reflectors.php"); break;
       case 'traffic'		: require_once("./pgs/traffic.php"); break;
