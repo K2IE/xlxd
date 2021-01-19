@@ -8,7 +8,7 @@ PREFIX=/usr/local
 BINDIR=$(PREFIX)/bin
 ETCDIR=$(PREFIX)/etc/xlxd
 DATADIR=/var/lib/xlxd
-XLXUSER=$(shell id -u xlxd >/dev/null 2>&1 && echo 1 || echo 0 )
+#XLXUSER=$(shell id -u xlxd >/dev/null 2>&1 && echo 1 || echo 0 )
 
 all: $(SOURCES) $(EXECUTABLE)
 
@@ -35,8 +35,10 @@ install:
 		cp ../config/xlxd.interlink $(ETCDIR)/xlxd.interlink.sample || \
 		cp ../config/xlxd.interlink $(ETCDIR)/xlxd.interlink
 	mkdir -p $(DATADIR)
-	$(shell wget -O $(DATADIR)/dmrid.dat http://xlxapi.rlx.lu/api/exportdmr.php)
-	$(shell wget -O $(DATADIR)/ysfnode.dat http://xlxapi.rlx.lu/api/exportysfrepeaters.php)
-	$(shell if [ $(XLXUSER)==0 ]; then /usr/sbin/useradd -d /tmp -M -s /usr/sbin/nologin -r xlxd; fi)
+	[ ! -f $(DATADIR)/dmrid.dat ] && \
+		wget -O $(DATADIR)/dmrid.dat http://xlxapi.rlx.lu/api/exportdmr.php || echo dmrid.dat exists
+	[ ! -f $(DATADIR)/ysfnode.dat ] && \
+		wget -O $(DATADIR)/ysfnode.dat http://xlxapi.rlx.lu/api/exportysfrepeaters.php || echo ysfnode.dat exists
+#	$(shell if [ $(XLXUSER)==0 ]; then /usr/sbin/useradd -d /tmp -M -s /usr/sbin/nologin -r xlxd; fi)
 	cp -f ../scripts/xlxd.service /lib/systemd/system/xlxd.service
 	systemctl daemon-reload
