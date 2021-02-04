@@ -210,7 +210,7 @@ bool CUsb3000Interface::OpenDevice(void)
     ftStatus = FT_SetBaudRate(m_FtdiHandle, baudrate );
     if (ftStatus != FT_OK) { FTDI_Error((char *)"FT_SetBaudRate", ftStatus ); return false; }
     
-    ftStatus = FT_SetLatencyTimer(m_FtdiHandle, 1);
+    ftStatus = FT_SetLatencyTimer(m_FtdiHandle, 4);
     if (ftStatus != FT_OK) { FTDI_Error((char *)"FT_SetLatencyTimer", ftStatus ); return false; }
     
     ftStatus = FT_SetUSBParameters(m_FtdiHandle, USB3XXX_MAXPACKETSIZE, 0);
