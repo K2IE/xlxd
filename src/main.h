@@ -169,7 +169,7 @@
 
 // system paths -------------------------------------------------
 
-#define XML_PATH                        "/var/log/xlxd.xml"
+#define XML_PATH                        "/run/log/xlxd.xml"
 #define WHITELIST_PATH                  "/usr/local/etc/xlxd/xlxd.whitelist"
 #define BLACKLIST_PATH                  "/usr/local/etc/xlxd/xlxd.blacklist"
 #define INTERLINKLIST_PATH              "/usr/local/etc/xlxd/xlxd.interlink"
