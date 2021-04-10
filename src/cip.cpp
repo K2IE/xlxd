@@ -199,7 +199,7 @@ std::ostream& operator <<(std::ostream& stream, const CIp& Ip)
         stream << sz;
     }
 
-    if (Ip.GetPort()) stream << ":" << Ip.GetPort();
+    //if (Ip.GetPort()) stream << ":" << Ip.GetPort();
     return stream;
 }
 
