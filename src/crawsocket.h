@@ -92,11 +92,7 @@ protected:
     // data
     int                 m_Socket;
     int                 m_Proto;
-#ifdef IPv6_SUPPORT
-    struct sockaddr_storage  m_SocketAddr;
-#else
     struct sockaddr_in  m_SocketAddr;
-#endif
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////

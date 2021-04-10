@@ -49,11 +49,12 @@ public:
     virtual ~CIp() {};
     
     // sockaddr
+    void SetSockAddr(struct sockaddr_in *);
+
 #ifdef IPV6_SUPPORT
     void SetSockAddr(struct sockaddr_storage *);
     struct sockaddr_storage *GetSockAddr(void) const { return (sockaddr_storage *)&m_Addr; }
 #else
-    void SetSockAddr(struct sockaddr_in *);
     struct sockaddr_in *GetSockAddr(void) const      { return (sockaddr_in *)&m_Addr; }
 #endif
     
@@ -72,6 +73,8 @@ public:
     void SetPort(int p)                              { ((struct sockaddr_in *)&m_Addr)->sin_port = htons(p); }
 #endif
     friend std::ostream& operator <<(std::ostream& stream, const CIp& Ip);
+
+    bool HasSameAddr(const CIp &);
 
     // helper
     unsigned long int StreamId(void) const;

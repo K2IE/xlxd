@@ -28,7 +28,7 @@
 #include <netdb.h>
 #include <cstring>
 
-#define CIP_CONVERT_IPV4_IN_IPV6
+//#define CIP_CONVERT_IPV4_IN_IPV6
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // constructors
@@ -94,11 +94,25 @@ CIp::CIp(const CIp &ip)
 
 #ifdef IPV6_SUPPORT
 void CIp::SetSockAddr(struct sockaddr_storage *ss)
-#else
-void CIp::SetSockAddr(struct sockaddr_in *ss)
-#endif
 {
     ::memcpy(&m_Addr, ss, sizeof(m_Addr));
+}
+#endif
+
+void CIp::SetSockAddr(struct sockaddr_in *ss)
+{
+#ifdef IPV6_SUPPORT
+    struct sockaddr_in6 sin6;
+    bzero(&sin6, sizeof(sin6));
+    uint32_t *a = (uint32_t *)&(((struct sockaddr_in6 *)&sin6)->sin6_addr);
+    sin6.sin6_family = AF_INET6;
+    a[0] = 0; a[1] = 0; a[2] = htonl(0xFFFF);
+    a[3] = ss->sin_addr.s_addr;
+    sin6.sin6_port = ss->sin_port;
+    ::memcpy(&m_Addr, &sin6, sizeof(sin6));
+#else
+    ::memcpy(&m_Addr, ss, sizeof(m_Addr));
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -187,6 +201,42 @@ std::ostream& operator <<(std::ostream& stream, const CIp& Ip)
 
     if (Ip.GetPort()) stream << ":" << Ip.GetPort();
     return stream;
+}
+
+bool CIp::HasSameAddr(const CIp &ip)
+{
+#if IPV6_SUPPORT
+    uint32_t addr[4] = {0, 0, 0, 0};
+
+    if (m_Addr.ss_family == AF_INET)
+    {
+        if (ip.GetAf() == AF_INET)
+        {
+            return (((struct sockaddr_in *)&m_Addr)->sin_addr.s_addr == ((struct sockaddr_in *)ip.GetSockAddr())->sin_addr.s_addr);
+        }
+        else
+        {
+            addr[0] = 0; addr[1] = 0; addr[2] = htonl(0xFFFF);
+            addr[3] = ((struct sockaddr_in *)&m_Addr)->sin_addr.s_addr;
+            return (::memcmp(&addr, &((struct sockaddr_in6 *)ip.GetSockAddr())->sin6_addr, sizeof(addr)) == 0);
+        }
+    }
+    else 
+    {
+        if (ip.GetAf() == AF_INET)
+        {
+            addr[0] = 0; addr[1] = 0; addr[2] = htonl(0xFFFF);
+            addr[3] = ((struct sockaddr_in *)ip.GetSockAddr())->sin_addr.s_addr;
+            return (::memcmp(&addr, &((struct sockaddr_in6 *)&m_Addr)->sin6_addr, sizeof(addr)) == 0);
+        }
+        else
+        {
+            return (::memcmp(&((struct sockaddr_in6 *)ip.GetSockAddr())->sin6_addr, &((struct sockaddr_in6 *)&m_Addr)->sin6_addr, sizeof(addr)) == 0);
+        }
+    }
+#else
+    return (((struct sockaddr_in *)&m_Addr)->sin_addr.s_addr == ((struct sockaddr_in *)ip.GetSockAddr())->sin_addr.s_addr);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

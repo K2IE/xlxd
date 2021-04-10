@@ -368,7 +368,7 @@ void CG3Protocol::IcmpTask(void)
                 while ( (client = clients->FindNextClient(PROTOCOL_G3, &index)) != NULL )
                 {
                     CIp ClientIp = client->GetIp();
-                    if (ClientIp == Ip)
+                    if (ClientIp.HasSameAddr(Ip))
                     {
                         clients->RemoveClient(client);
                     }

@@ -56,11 +56,7 @@ bool CRawSocket::Open(uint16 uiProto)
     int on = 1;
     
     // create socket
-#if IPV6_SUPPORT
-    m_Socket = socket(AF_INET6,SOCK_RAW,uiProto);
-#else
     m_Socket = socket(AF_INET,SOCK_RAW,uiProto);
-#endif
 
     if ( m_Socket != -1 )
     {
@@ -87,7 +83,7 @@ void CRawSocket::Close(void)
 
 int CRawSocket::Receive(CBuffer *Buffer, CIp *Ip, int timeout)
 {
-#if IPV6_SUPPORT
+#ifdef IPV6_SUPPORT
     struct sockaddr_storage Sin;
     unsigned int uiFromLen = sizeof(struct sockaddr_storage);
 #else
@@ -123,7 +119,11 @@ int CRawSocket::Receive(CBuffer *Buffer, CIp *Ip, int timeout)
             Buffer->resize(iRecvLen);
 
             // get IP
+#ifdef IPV6_SUPPORT
+            Ip->SetSockAddr((struct sockaddr_storage *)&Sin);
+#else
             Ip->SetSockAddr(&Sin);
+#endif
         }
     }
 
@@ -157,12 +157,8 @@ int CRawSocket::IcmpReceive(CBuffer *Buffer, CIp *Ip, int timeout)
             bzero(&Sin, sizeof(Sin));
             Sin.sin_family = AF_INET;
             Sin.sin_addr.s_addr = remote_iph->ip_dst.s_addr;
-#ifdef IPV6_SUPPORT
-            Ip->SetSockAddr((struct sockaddr_storage *)&Sin);
-#else
             Ip->SetSockAddr(&Sin);
-#endif
-
+	    std::cout << "ICMP from " << *Ip << std::endl;
         }
     }
     return iIcmpType;
