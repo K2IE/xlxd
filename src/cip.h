@@ -51,7 +51,7 @@ public:
     // sockaddr
 #ifdef IPV6_SUPPORT
     void SetSockAddr(struct sockaddr_storage *);
-    struct sockaddr_storage *GetSockAddr(void) const { return &m_Addr; }
+    struct sockaddr_storage *GetSockAddr(void) const { return (sockaddr_storage *)&m_Addr; }
 #else
     void SetSockAddr(struct sockaddr_in *);
     struct sockaddr_in *GetSockAddr(void) const      { return (sockaddr_in *)&m_Addr; }

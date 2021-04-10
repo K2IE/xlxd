@@ -161,7 +161,7 @@ void CG3Protocol::PresenceTask(void)
     {
 
         CIp Ip(ReqIp);
-        Ip.GetSockAddr()->sin_port = htons(G3_DV_PORT);
+        ((struct sockaddr_in *)Ip.GetSockAddr())->sin_port = htons(G3_DV_PORT);
 
         if (Buffer.size() == 32)
         {

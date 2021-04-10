@@ -95,7 +95,11 @@ int CUdpMsgSocket::Receive(CBuffer *Buffer, CIp *Ip, int timeout)
             Buffer->resize(iRecvLen);
             
             // get IP
+#ifdef IPV6_SUPPORT
+            Ip->SetSockAddr((struct sockaddr_storage *)&Sin);
+#else
             Ip->SetSockAddr(&Sin);
+#endif
 
             // get local IP
             struct cmsghdr *Cmsg;

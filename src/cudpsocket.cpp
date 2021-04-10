@@ -125,7 +125,11 @@ int CUdpSocket::Receive(CBuffer *Buffer, CIp *Ip, int timeout)
             Buffer->resize(iRecvLen);
             
             // get IP
+#ifdef IPV6_SUPPORT
+            Ip->SetSockAddr((struct sockaddr_storage *)&Sin);
+#else
             Ip->SetSockAddr(&Sin);
+#endif
         }
     }
  
@@ -141,7 +145,7 @@ int CUdpSocket::Send(const CBuffer &Buffer, const CIp &Ip)
     CIp temp(Ip);
     return (int)::sendto(m_Socket,
            (void *)Buffer.data(), Buffer.size(),
-           0, (struct sockaddr *)temp.GetSockAddr(), sizeof(struct sockaddr_in));
+           0, (struct sockaddr *)temp.GetSockAddr(), sizeof(struct sockaddr_storage));
 }
 
 int CUdpSocket::Send(const char *Buffer, const CIp &Ip)
@@ -149,25 +153,25 @@ int CUdpSocket::Send(const char *Buffer, const CIp &Ip)
     CIp temp(Ip);
     return (int)::sendto(m_Socket,
            (void *)Buffer, ::strlen(Buffer),
-           0, (struct sockaddr *)temp.GetSockAddr(), sizeof(struct sockaddr_in));
+           0, (struct sockaddr *)temp.GetSockAddr(), sizeof(struct sockaddr_storage));
 }
 
 int CUdpSocket::Send(const CBuffer &Buffer, const CIp &Ip, uint16 destport)
 {
     CIp temp(Ip);
-    temp.GetSockAddr()->sin_port = htons(destport);
+    temp.SetPort(destport);
     return (int)::sendto(m_Socket,
                          (void *)Buffer.data(), Buffer.size(),
-                         0, (struct sockaddr *)temp.GetSockAddr(), sizeof(struct sockaddr_in));
+                         0, (struct sockaddr *)temp.GetSockAddr(), sizeof(struct sockaddr_storage));
 }
 
 int CUdpSocket::Send(const char *Buffer, const CIp &Ip, uint16 destport)
 {
     CIp temp(Ip);
-    temp.GetSockAddr()->sin_port = htons(destport);
+    temp.SetPort(destport);
     return (int)::sendto(m_Socket,
                          (void *)Buffer, ::strlen(Buffer),
-                         0, (struct sockaddr *)temp.GetSockAddr(), sizeof(struct sockaddr_in));
+                         0, (struct sockaddr *)temp.GetSockAddr(), sizeof(struct sockaddr_storage));
 }
 
 
