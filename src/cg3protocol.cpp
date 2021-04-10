@@ -330,6 +330,7 @@ void CG3Protocol::ConfigTask(void)
 
                 if (m_GwAddress == 0)
                 {
+                    std::cout << "Using gateway address " << inet_ntoa(*(in_addr *)m_ConfigSocket.GetLocalAddr()) << std::endl;
                     Buffer.Append(*(uint32 *)m_ConfigSocket.GetLocalAddr()); 
                 }
                 else

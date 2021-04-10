@@ -45,9 +45,12 @@ bool CUdpMsgSocket::Open(uint16 uiPort)
 
 int CUdpMsgSocket::Receive(CBuffer *Buffer, CIp *Ip, int timeout)
 {
+#ifdef IPV6_SUPPORT
+    struct sockaddr_storage Sin;
+#else
     struct sockaddr_in Sin;
+#endif
     fd_set FdSet;
-    unsigned int uiFromLen = sizeof(struct sockaddr_in);
     int iRecvLen = -1;
     struct timeval tv;
 
