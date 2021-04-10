@@ -191,7 +191,7 @@ void CG3Protocol::PresenceTask(void)
             while ( (extant = clients->FindNextClient(PROTOCOL_G3, &index)) != NULL )
             {
                 CIp ClIp = extant->GetIp();
-                if (ClIp.GetAddr() == Ip.GetAddr())
+                if (ClIp == Ip)
                 {
                     break;
                 }
@@ -367,7 +367,7 @@ void CG3Protocol::IcmpTask(void)
                 while ( (client = clients->FindNextClient(PROTOCOL_G3, &index)) != NULL )
                 {
                     CIp ClientIp = client->GetIp();
-                    if (ClientIp.GetAddr() == Ip.GetAddr())
+                    if (ClientIp == Ip)
                     {
                         clients->RemoveClient(client);
                     }
@@ -403,7 +403,7 @@ void CG3Protocol::Task(void)
         while ( (client = clients->FindNextClient(PROTOCOL_G3, &index)) != NULL )
         {
             ClIp = client->GetIp();
-            if (ClIp.GetAddr() == Ip.GetAddr())
+            if (ClIp == Ip)
             {
                 BaseIp = &ClIp;
                 client->Alive();
@@ -576,7 +576,7 @@ bool CG3Protocol::OnDvHeaderPacketIn(CDvHeaderPacket *Header, const CIp &Ip)
         while ( (client = clients->FindNextClient(PROTOCOL_G3, &index)) != NULL )
         {
             CIp ClIp = client->GetIp();
-            if (ClIp.GetAddr() == Ip.GetAddr())
+            if (ClIp == Ip)
             {
                 break;
             }
