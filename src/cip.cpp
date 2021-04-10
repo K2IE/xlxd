@@ -204,11 +204,11 @@ unsigned long int CIp::StreamId(void) const
     }
     else
     {
-        stream_id  = *(uint32_t *)(&(struct sockaddr_in6 *)&m_Addr->sin6_addr[0]);
-        stream_id ^= *(uint32_t *)(&(struct sockaddr_in6 *)&m_Addr->sin6_addr[4]);
-        stream_id ^= *(uint32_t *)(&(struct sockaddr_in6 *)&m_Addr->sin6_addr[8]);
-        stream_id ^= *(uint32_t *)(&(struct sockaddr_in6 *)&m_Addr->sin6_addr[12]);
-        stream_id ^= (((uint32_t)((struct sockaddr_in6 *)&m_Addr)->sin_port) << 16) | (uint32_t)((struct sockaddr_in6 *)&m_Addr)->sin_port;
+        stream_id  = *(uint32_t *)(&((struct sockaddr_in6 *)&m_Addr)->sin6_addr.s6_addr[0]);
+        stream_id ^= *(uint32_t *)(&((struct sockaddr_in6 *)&m_Addr)->sin6_addr.s6_addr[4]);
+        stream_id ^= *(uint32_t *)(&((struct sockaddr_in6 *)&m_Addr)->sin6_addr.s6_addr[8]);
+        stream_id ^= *(uint32_t *)(&((struct sockaddr_in6 *)&m_Addr)->sin6_addr.s6_addr[12]);
+        stream_id ^= (((uint32_t)((struct sockaddr_in6 *)&m_Addr)->sin6_port) << 16) | (uint32_t)((struct sockaddr_in6 *)&m_Addr)->sin6_port;
     }
 #endif
     return stream_id;
