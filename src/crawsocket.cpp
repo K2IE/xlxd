@@ -56,7 +56,12 @@ bool CRawSocket::Open(uint16 uiProto)
     int on = 1;
     
     // create socket
+#if IPV6_SUPPORT
+    m_Socket = socket(AF_INET6,SOCK_RAW,uiProto);
+#else
     m_Socket = socket(AF_INET,SOCK_RAW,uiProto);
+#endif
+
     if ( m_Socket != -1 )
     {
         fcntl(m_Socket, F_SETFL, O_NONBLOCK);
@@ -82,9 +87,14 @@ void CRawSocket::Close(void)
 
 int CRawSocket::Receive(CBuffer *Buffer, CIp *Ip, int timeout)
 {
+#if IPV6_SUPPORT
+    struct sockaddr_storage Sin;
+    unsigned int uiFromLen = sizeof(struct sockaddr_storage);
+#else
     struct sockaddr_in Sin;
-    fd_set FdSet;
     unsigned int uiFromLen = sizeof(struct sockaddr_in);
+#endif
+    fd_set FdSet;
     int iRecvLen = -1;
     struct timeval tv;
 
@@ -113,11 +123,7 @@ int CRawSocket::Receive(CBuffer *Buffer, CIp *Ip, int timeout)
             Buffer->resize(iRecvLen);
 
             // get IP
-#ifdef IPV6_SUPPORT
-            Ip->SetSockAddr((sockaddr_storage *)&Sin);
-#else
             Ip->SetSockAddr(&Sin);
-#endif
         }
     }
 
