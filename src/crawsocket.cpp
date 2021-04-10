@@ -158,7 +158,6 @@ int CRawSocket::IcmpReceive(CBuffer *Buffer, CIp *Ip, int timeout)
             Sin.sin_family = AF_INET;
             Sin.sin_addr.s_addr = remote_iph->ip_dst.s_addr;
             Ip->SetSockAddr(&Sin);
-	    std::cout << "ICMP from " << *Ip << std::endl;
         }
     }
     return iIcmpType;

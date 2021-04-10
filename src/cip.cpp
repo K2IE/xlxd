@@ -28,7 +28,7 @@
 #include <netdb.h>
 #include <cstring>
 
-//#define CIP_CONVERT_IPV4_IN_IPV6
+#define CIP_CONVERT_IPV4_IN_IPV6
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // constructors
