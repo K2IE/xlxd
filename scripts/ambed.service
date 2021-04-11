@@ -1,14 +1,13 @@
 [Unit]
 Description=AMBE Transcoder Daemon
-After=network.target
+After=systemd-user-sessions.service network.target
 
 [Service]
 Type=simple
-User=root
-Group=root
+EnvironmentFile=-/etc/default/ambed
 ExecStartPre=-/sbin/rmmod ftdi_sio
 ExecStartPre=-/sbin/rmmod usb_serial
-ExecStart=/ambed/ambed 127.0.0.1
+ExecStart=/usr/local/bin/ambed $IPADDR
 Restart=on-abnormal
 
 [Install]
