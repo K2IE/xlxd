@@ -1,6 +1,5 @@
 CC=g++
-CFLAGS=-c -std=c++11 -pthread
-CFLAGS+=-DIPV6_SUPPORT
+CFLAGS=-c -std=c++11 -pthread -DIPV6_SUPPORT
 LDFLAGS=-std=c++11 -pthread
 SOURCES=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
@@ -29,6 +28,9 @@ install:
 	[ -f /xlxd/xlxd.interlink ] && \
 		cp ../config/xlxd.interlink /xlxd/xlxd.interlink.sample || \
 		cp ../config/xlxd.interlink /xlxd/xlxd.interlink
+<<<<<<< HEAD
 	[ -f /xlxd/xlxd.terminal ] && \
 		cp ../config/xlxd.terminal /xlxd/xlxd.terminal.sample || \
 		cp ../config/xlxd.terminal /xlxd/xlxd.terminal
+=======
+>>>>>>> f03fc9608a57c4bed71fb4bb416f114d2a355d6c
