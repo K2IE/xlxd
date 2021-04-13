@@ -54,7 +54,11 @@ bool CPacketStream::Open(const CDvHeaderPacket &DvHeader, CClient *client)
         m_DvHeader = DvHeader;
         m_OwnerClient = client;
         m_LastPacketTime.Now();
-        m_CodecStream = g_Transcoder.GetStream(this, client->GetCodec());
+	if(DvHeader.GetRpt2Module() == 'A' || DvHeader.GetRpt2Module() == 'D' ||
+	   DvHeader.GetRpt2Module() == 'L')
+		m_CodecStream = g_Transcoder.GetStream(this, client->GetCodec());
+	else
+		m_CodecStream = g_Transcoder.GetStream(this, CODEC_NONE);
         ok = true;
     }
     return ok;
