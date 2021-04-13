@@ -152,5 +152,26 @@ function kbytes_to_string($kb) {
    return sprintf("%0.2f %s", ($kb/$scale),$units[$ui]);
 }
 
+function fixupIPv6($ip) {
+    // function to format the lower 16 bits of an IPv6 for pretty display
+    $ip = rtrim(ltrim($ip, '['), ']');
+    $hex = bin2hex(inet_pton($ip));
+    $ip = substr(implode(':', str_split($hex, 4)), 15);
+    $ip = preg_replace('/:0{1,3}(?=\w)/', ':', $ip);
+
+    // Set chain
+    $z = ':0:0:0:';
+    // While no :: and chain still possible
+    while(strpos($ip, '::') === false && strlen($z) >= 5){
+        $pos = strpos($ip, $z);
+        // Replace chain and break
+        if($pos !== false){ $ip = substr_replace($ip, '::', $pos, strlen($z)); break; }
+        // cut away one '0:' to shorten the chain
+        $z = substr($z, 0, strlen($z) - 2);
+    }
+
+    // Trim leading '0's and return
+    return ltrim($ip, '0');
+}
 
 ?>

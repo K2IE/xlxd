@@ -67,7 +67,8 @@ for ($i=0;$i<$Reflector->PeerCount();$i++) {
    if ($PageOptions['PeerPage']['IPModus'] != 'HideIP') {
       echo '
    <td>';
-      $Bytes = explode(".", $Reflector->Peers[$i]->GetIP());
+      $ip = rtrim(ltrim($Reflector->Peers[$i]->GetIP(), '['), ']');
+      $Bytes = explode(".", $ip);
       if ($Bytes !== false && count($Bytes) == 4) {
          switch ($PageOptions['PeerPage']['IPModus']) {
             case 'ShowLast1ByteOfIP'      : echo $PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$Bytes[3]; break;
@@ -75,6 +76,14 @@ for ($i=0;$i<$Reflector->PeerCount();$i++) {
             case 'ShowLast3ByteOfIP'      : echo $PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$Bytes[1].'.'.$Bytes[2].'.'.$Bytes[3]; break;
             default                       : echo $Reflector->Peers[$i]->GetIP();
          }
+      }
+      elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            switch ($PageOptions['PeerPage']['IPv6Modus']) {
+               case 'ShowPartialIP'     :
+                  echo '[*:*:*:*:'; echo fixupIPv6($ip); echo ']'; break;
+               default                  :
+                  echo '['; echo $ip; echo ']';
+            } 
       }
       echo '</td>';
    }

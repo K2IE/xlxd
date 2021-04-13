@@ -175,7 +175,8 @@ for ($i=0;$i<$Reflector->NodeCount();$i++) {
       if ($PageOptions['RepeatersPage']['IPModus'] != 'HideIP') {
          echo '
       <td>';
-         $Bytes = explode(".", $Reflector->Nodes[$i]->GetIP());
+         $ip = rtrim(ltrim($Reflector->Nodes[$i]->GetIP(), '['), ']');
+         $Bytes = explode(".", $ip);
          if ($Bytes !== false && count($Bytes) == 4) {
             switch ($PageOptions['RepeatersPage']['IPModus']) {
                case 'ShowLast1ByteOfIP'      : echo $PageOptions['RepeatersPage']['MasqueradeCharacter'].'.'.$PageOptions['RepeatersPage']['MasqueradeCharacter'].'.'.$PageOptions['RepeatersPage']['MasqueradeCharacter'].'.'.$Bytes[3]; break;
@@ -184,6 +185,14 @@ for ($i=0;$i<$Reflector->NodeCount();$i++) {
                default                       : echo $Reflector->Nodes[$i]->GetIP();
             }
          }
+	 elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            switch ($PageOptions['RepeatersPage']['IPv6Modus']) {
+               case 'ShowPartialIP'     :
+	          echo '[*:*:*:*:'; echo fixupIPv6($ip); echo ']'; break;
+	       default			:
+                  echo '['; echo $ip; echo ']';
+            } 
+	 }
          echo '</td>';
       }
       echo '

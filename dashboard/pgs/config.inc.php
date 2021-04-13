@@ -8,6 +8,11 @@ ShowLast1ByteOfIP
 ShowLast2ByteOfIP
 ShowLast3ByteOfIP
 
+Possible values for IPv6Modus
+
+ShowFullIP
+ShowPartialIP
+
 */
 
 $Service     = array();
@@ -25,11 +30,13 @@ $PageOptions['PageRefreshDelay']                     = '10000';		// Page refresh
 $PageOptions['RepeatersPage'] = array();
 $PageOptions['RepeatersPage']['LimitTo']             = 99;		// Number of Repeaters to show
 $PageOptions['RepeatersPage']['IPModus']             = 'ShowFullIP';	// See possible options above
+$PageOptions['RepeatersPage']['IPv6Modus']           = 'ShowFullIP';	// See possible options above
 $PageOptions['RepeatersPage']['MasqueradeCharacter'] = '*';		// Character used for  masquerade
 
 $PageOptions['PeerPage'] = array();
 $PageOptions['PeerPage']['LimitTo']                  = 99;		// Number of peers to show
 $PageOptions['PeerPage']['IPModus']                  = 'ShowFullIP';	// See possible options above
+$PageOptions['PeerPage']['IPv6Modus']                = 'ShowFullIP';	// See possible options above
 $PageOptions['PeerPage']['MasqueradeCharacter']      = '*';		// Character used for  masquerade
 
 $PageOptions['LastHeardPage']['LimitTo']             = 39;		// Number of stations to show
@@ -76,8 +83,8 @@ include an extra config file for people who dont like to mess with shipped confi
 this makes updating dashboard from git a little bit easier   
 */   
  
-if (file_exists("/var/www/xlx020/config.inc.php")) {   
- include ("/var/www/xlx020/config.inc.php");  
+if (file_exists("/var/www/xlxip6/config.inc.php")) {   
+ include ("/var/www/xlxip6/config.inc.php");  
 }   
 
 ?>
